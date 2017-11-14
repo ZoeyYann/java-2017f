@@ -2,6 +2,8 @@ public class Position {
 
     private int x;
 
+
+
     public Creature getHolder() {
         return holder;
     }
