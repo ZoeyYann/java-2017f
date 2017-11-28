@@ -1,7 +1,9 @@
 
-# 设计原则
+# 设计原则 
 
 ## Change is the eternal truth.
+
+🚺
 
 ---
 
@@ -28,7 +30,7 @@
 
 <br/>
 
-![](http://www.plantuml.com/plantuml/png/Iyv9B2vM24fDBadCIyz9hUPIKD0koyzCKKWfIYpNq0HnK_9Bat9I5HABKXE10hLSGE2UdrjGMf9OafcVbvWJxvwQdvjQKbGPxrXGa9EP31PMqDMrGnZBvLwKM901bCh1emRE0ekxXte20000) <!-- .element height="50%" width="50%" --> 
+![](http://www.plantuml.com/plantuml/png/Iyv9B2vM24fDBadCIyz9hUPIKD0koyzCKKWfIYpNq0HnK_9Bat9I5HABKXE10hLSGE2SdrjGMf9OafcVbvWJxvwQdvjQKbGPxrXGa9EP31PMqDMrGnZBvLwKM901bCh1emRE0ekxXte20000)<!-- .element height="50%" width="50%" -->
 
 
 ---
@@ -36,7 +38,7 @@
 ## Applying SRP
 
 <br/>
-![](http://www.plantuml.com/plantuml/png/Iyv9B2vM24fDBadCIyz9hUPIKD0koyzCKKWfIYpNqEIgvU9A1YjnJytFJIqfoaoEHrMSab-Qb9Ega5YKcWXHpkMUdrjGMf9OafcVbvWJ3zLN6UzOK92JcGmMLj3LjSDc89TxKM911b1H3ePgOjIuXtfomTNXj0DDHQWd0000)<!-- .element height="50%" width="50%" -->
+![](http://www.plantuml.com/plantuml/png/Iyv9B2vM24fDBadCIyz9hUPIKD0koyzCKKWfIYpNqEIgvU9A1YjnJytFJIqfoaoEHrMSab-Qb9Ega5YKcWXHpkMSdrjGMf9OafcVbvWJ3zLN6UzOK92JcGmMLj3LjSDc89TxKM911b1H3ePgOjIuXtfomTNXj0DDHQWd0000)<!-- .element height="50%" width="50%" -->
 
 
 ---
@@ -61,27 +63,29 @@ interface Modem{
 <br/>
 ![](http://www.plantuml.com/plantuml/png/yymhIIrAIqnELN19B4cCTyv8pCjBpU7oX0ixvmC5aaioy_Euk92LADZKwEeg-EQdfER6U-OMvAJcfkQL98BL8RJWLWG0)<!-- .element height="30%" width="30%" --> 
 
- <font color=#0099ff>Note：如果应用程序的变化方式总是导致这两个职责同时变化，那么就不必分离它们！</font>
+ <span style="color:#0099ff">Note：如果应用程序的变化方式总是导致这两个职责同时变化，那么就不必分离它们！</span> <!-- .element: class="fragment" -->
 
 ---
 
-## OCP 开放封闭原则
+## OCP 开放封闭原则 
 
-- Software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification. 
+<br/>
+- Software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification.
+<br/> 
 
-- <font color=red>OCP is the heart of OO design!</font>
+<span style="color:red">OCP is the heart of OO design!</span><!-- .element: class="fragment" -->
 
 ---
 
 ## OCP Inside
 
 - Two primary attributes
-  + Open for extension: the behavior of the module can be extended
-  + Closed for modification: extending the behavior of a module does not result in changes to the source or binary code of the module.
+  + <font size=6><font color="red">Open for extension</font>: the behavior of the module can be extended.</font>
+  + <font size=6><font color="red">Closed for modification</font>: extending the behavior of a module does not result in changes to the source or binary code of the module.</font>
 
-- Do not modify soucecode, but change behavior.
+- Do not modify sourcecode, but change behavior.
 
-- <font color=yellow>Is it possible?</font>
+<span style="color:yellow">Is it possible?</span><!-- .element: class="fragment" -->
 
 ---
 
@@ -127,861 +131,464 @@ interface Modem{
 - If for each object o1 of type S there is an object o2 of type T such that for all programs P defined in terms of T, the behavior of P is unchanged when o1 is substituted for o2 then S is a subtype of T. [Liskov88] 
 
 
-
 ---
 
-## Class
+## LSP Violation (I)
 
-- 对象的“生成模板”
-  + 属性（状态）
-  + 方法（行为）
+- RTTI (运行时类型识别)
 
 ```java
-class Human {
-    int age;
-    boolean gender;
-    void walk() {};
-}
-```
-
----
-
-## UML
-
-![](http://www.plantuml.com/plantuml/png/Iyv9B2vMy2ZDJSnJgEPI08BCl1A5nFHKQp0dAJy_9nKebPwQbv9Q114hoyzCKIXFpCdMqBJcgWK0)  
-
-![](http://s.plantuml.com/logoc.png) [PlantUML](http://www.plantuml.com/)
-
----
-
-## 初始化（构造）
-
-从”对象模版“生成“对象实例“
-
-```java
-Human you = new Human();
-```
-
-- 每个对象拥有一份属性拷贝
-- 对象共享方法（代码）的定义
-- 每个对象有一个标识（id，内存地址）
-- 通过对象引用（Object Reference）可访问对象方法和属性
-
-
----
-
-## 构造函数（Constructor）
-
-```java
-class Human {
-    int age;
-    boolean gender;
-    Human(){ //default constructor
-        age = 0;
-        gender = false;
-    }
-    Human(int age){ //overloading
-        gender = true;
-        this.age = age;
-    }
-    Human(boolean gender){
-        this(0) //calling constructors from constructors
-        this.gender = gender;
+public class Shape {
+    ShapeType itsType;
+    Shape(ShapeType shapeType){
+        itsType = shapeType;
     }
 }
-
 ```
-
----
-
-## 成员变量初始化 （P185）
-
-按在类中定义顺序逐个初始化（或赋予默认值），然后执行构造函数。
-
----
-
-## 静态变量
-
-
 ```java
-class Human {
-    static int total;
-
-    int age;
-    boolean gender;
-    Human(){ //default constructor
-        Human.total++;
-        age = 0;
-        gender = false;
+public class Circle extends Shape{
+    Circle(ShapeType shapeType){
+        super(shapeType);
     }
-    ...
-}
-
-```
-
----
-
-## Static Blocks
-```java
-class Human {
-    static int total;
-    static{
-        total = 2; //Adam and Eve
-    }
-    int age;
-    boolean gender;
-    Human(){ //default constructor
-        Human.total++;
-        age = 0;
-        gender = false;
-    }
-    ...
-}
-
-```
-
----
-
-## Instance initialization
-
-```java
-class Man {
-    Object girlfriend;
-    {
-        girlfriend = new Dog();
-    }
-    ...
-}
-
-```
-
----
-
-## 数组初始化
-PP. 193-204
-
----
-
-## Enum 怎么理解？
-
-```java
-enum GENDER {
-    MALE, FEMALE, NOTTELLING
-}
-
-public static void main(String[] args){
-    GENDER gender = GENDER.MALE;
-    System.out.println(gender.toString() + " " + gender.ordinal())
-}
-```
-
----
-
-## 对象消亡
-
-- 垃圾回收（Garbage Collection）
-  + Stop-and-Copy
-  + Mark-and-Sweep
-
-vs. [Reference Counting](https://en.wikipedia.org/wiki/Reference_counting)
-
----
-
-## Stop-and-Copy
-
-![](http://www.memorymanagement.org/_images/two-space.svg)
-
----
-
-## Mark-and-Sweep
-
-![](http://3.bp.blogspot.com/-LNBSfvedEEM/VkxZomXBkvI/AAAAAAAAACI/EhsDaD0k-1g/s1600/output_oPN0rV.gif)
-
----
-
-## package
-
-```bash
-Huam.java
-```
-```java
-package cn.edu.nju.java;
-
-class Human{
-
-}
-```
-```bash
-Society.java
-```
-```java
-import cn.edu.nju.java.Human;
-
-```
-
----
-
-## CLASSPATH
-
-```bash
-CLASSPATH=.:CLASSPATH=/path/to/some/folder:/path/to/other.jar
-```
-
-```bash
-/path/to/some/folder/cn/edu/nju/java/Human.class
-
-java Human
-```
-
-<span style="color:red">Why?</span> <!-- .element: class="fragment" -->
-
-The class loading problem.<!-- .element: class="fragment" -->
-
----
-
-## package
-
-<span style="color:red">Why?</span> <!-- .element: class="fragment" -->
-
-组织管理、避免冲突、访问控制 （PP. 210-220) <!-- .element: class="fragment" -->
-
-
----
-
-## 访问控制
-
-- Modifier
-  + public
-  + protected
-  + private
-  + _default_
-
----
-
-## public
-
-```java
-
-enum Appearance {
-    BEAUTIFUL, UGLY
-}
-public class Human{
-    public Appearance appearance;
-}
-```
-
-Interface access
-
----
-
-## protected
-
-```java
-public class Human{
-    protected float money;
-}
-```
-<small>注：此例并不恰当</small>
-
-Inheritance access 
-
----
-
-## private
-
-```java
-enum Mood {
-    GOOD, BAD
-}
-public class Human{
-    private Mood mood;
-}
-```
-
-You can't touch that!
-
----
-
-## default
-
-
-```java
-
-enum Performance {
-    GOOD, BAD
-}
-public class Human{
-    Performance performance;
-}
-```
-
-Package friendly
-
----
-
-## Modifiers
-
-- class
-- member
-- method
-
-<span style="color:red">Why?</span> <!-- .element: class="fragment" -->
-
-封装  <!-- .element: class="fragment" -->
-
----
-
-## Encapsulation
-
-
-Encapsulation is to hide the implementation details from users
-
-![](https://alssl.askleomedia.com/wp-content/uploads/2009/01/cpu-600x490.jpg) <!-- .element height="40%" width="40%" --> 
-
-
-<span style="color:red">Why?</span> <!-- .element: class="fragment" -->
-
----
-
-## Encapsulating for
-
-![](https://qph.ec.quoracdn.net/main-qimg-00d9d179877f83e537c65a770cd052e1.webp)
-
-Flexibility, Reusability, Maintainability.
-
-
----
-
-## 代码重用（复用）
-
-- Composition
-- Inheritance
-- Delegation
-
-
----
-
-## Composition
-
-```java
-public class Heart {
-    ...
-}
-
-public class Liver {
-    ...
-}
-
-public class Human {
-    private Heart battery;
-    private Liver screen;
-    ...
-}
-
-```
-
----
-
-## Composition in UML
-![](http://www.plantuml.com/plantuml/png/yoZDJSnJK39KKj3IrGNJ7gc9HILS7XZYFfbbgKK0)
-
-“部分”的生命期不能比“整体”还要长
-
---- 
-
-## 弱合成
-
-- Aggregation
-- Association
-
-
----
-
-## Aggregation
-
-![](http://www.plantuml.com/plantuml/png/SquiKb0oL5B8rzK5qwvvwPbvgLpEoC8cIWhX6QcfEG00)
-
-
-“部分”可独立存在
-
-
----
-
-## Association
-
-![](http://www.plantuml.com/plantuml/png/2qZDByX9LNZKC4VhKSDS1LrT4DCGn0pFByhEp4iFo4bCJWK0)
-
-对象可以向另一个对象通过某种方式发送消息
-
----
-
-## Inheritance
-
-![](http://www.plantuml.com/plantuml/png/SquiKh2fqTLLS4hDgm80)
-
-Initialize the base first
-
-
---- 
-
-## Delegating
-```java
-public class Car {
-    public Window[] windows = new Window[4];
-}
-
-public class Jetta extends Car{
-
-}
-
-Car myCar = new Jetta();
-
-//手摇式玻璃
-myCar.windows[0].open();
-
-```
-
-
---- 
-
-## Delegating
-```java
-public class Car {
-    public Window[] windows = new Window[4];
-}
-
-public class Tesla extends Car{
-    public void openWindow(int i){
-        this.windows[i].open(); //delegate
+    public void draw(){
+        System.out.println("Draw a circle.");
     }
 }
-
-Car hisCar = new Tesla();
-
-//自动式玻璃
-hisCar.openWindow(1);
-
 ```
-
---- 
-
-## 代码复用？
-
-![](https://developer.apple.com/library/content/documentation/General/Conceptual/CocoaEncyclopedia/Art/delegation1.jpg)
-
----
-
-## A system class
-
 ```java
-
-public class Window {
-    private Button btnClose;
-
-    private void btnCloseClicked(){
-        ///???
+public class Square extends Shape{
+    Square(ShapeType shapeType){
+        super(shapeType);
+    }
+    public void draw(){
+        System.out.println("Draw a square.");
     }
 }
-
 ```
 
 ---
 
-## Customizing it by extending it
+## LSP Violation (I)
 
+<br/>
 ```java
+public class Client {
 
-public class MyWindow extends Window {
-    private Button btnClose;
+    public static void drawShape(Shape shape){
+        if(shape.itsType == ShapeType.circle){
+            Circle circle = (Circle)shape;
+            circle.draw();
+        }
+        else if(shape.itsType == ShapeType.square){
+            Square square = (Square)shape;
+            ((Square) shape).draw();
+        }
+    }
 
-    private void btnCloseClicked(){
-        // bala bala
+    public static void main(String[] args){
+        Shape  s1 = new Circle(ShapeType.circle);
+        Shape  s2 = new Square(ShapeType.square);
+        Client.drawShape(s1);
+        Client.drawShape(s2);
     }
 }
+```
 
+
+<span style="color:red">增加一种新类型?</span> <!-- .element: class="fragment" -->
+
+
+---
+
+## LSP Violation (II)
+
+<br/>
+- incorrect IS-A Relationship
+
+<br/>
+![](http://www.plantuml.com/plantuml/png/Iyv9B2vM24fDBadCIyz9vKe6yuCBInEBKhcuuE8ADZMwkb1X0000)
+
+
+---
+
+## LSP Violation (II)
+
+<br/>
+- incorrect IS-A Relationship
+
+```java
+class Rectangle{
+  double itsWidth;
+  double itsHeight;
+  public void setWidth(double w) {itsWidth=w;}
+  public void setHeight(double h) {itsHeight=h;}
+  public double area(){ return itsWidth * itsHeight;}
+}
+```
+
+```java
+class Square extends Rectangle{
+  public void setWidth(double w) {
+      super.setWidth(w); super.setHeight(w);}
+  public void setHeight(double h) {
+      super.setWidth(w); super.setHeight(w);}
+}
 ```
 
 ---
 
-## Or implementing a delegate
+## LSP Violation (II)
+
+<br/>
 
 ```java
-
-public class Window {
-    private Button btnClose;
-    
-    private WindowDelegate delegate;
-
-    private void btnCloseClicked(){
-        delegate.windowClosing();
+public class Client{
+    public static void main (String[] args){
+        Rectangle r = new Square();
+        r.SetWidth(5.0);
+        r.SetHeight(4.0);
+        double a = r.area();
+        System.out.println(a);
     }
 }
-
-public class WindowDelegate {
-    public windowClosing(){
-        //bala bala
-    }
-}
-
 ```
 
-
-<span style="color:red">Why?</span> <!-- .element: class="fragment" -->
-
----
-
-## final 
-
-pp262-271
-
+<span style="color:red">结果为20吗？</span> <!-- .element: class="fragment" -->
 
 ---
 
-## final的变量
+## The Real Problem
+
+- Validity is not intrinsic.
+
+- IS-A is about Behavior 
+  + Behaviorally, a Square is not a Rectangle.
+
+---
+
+## Hueristics
+
+- Violation 1: 
+   + Degenerate functions in derivations.
+   ```java
+      public class Base{
+          public void f(){/** some code */}
+      }
+      public class Derived extends Base{
+          public void f(){}
+      }
+   ```
+
+- Violation 2:
+  + Throwing exceptions from derivatives.
 
 
+---
 
-常量声明(经常和static关键字一起使用)
+## LSP
+
+<br/>
+- LSP is one of the enablers of the OCP.
+
+<br/>
+- It is the substitutability of subtypes that allows a module, expressed in terms of a base type, to be extensible without modification. 
+
+---
+
+## ISP 接口隔离原则
+
+<br/>
+- Clients should not be forced to depend on methods that they do not use. 
+
+<br/>
+- Deals with the disadvantage of “fat” interfaces – whose interfaces are not cohesive. 
+
+
+---
+
+## 来个例子
+
+- Common Door
 
 ```java
-public static final int i = 0;
+class Door {
+    public abstract void lock();
+    public abstract void unlock();
+    public abstract bool isDoorOpen();
+}
+```
+- Timer
 
-i=1; // compilation errorerror
+```java
+class Timer {
+    public void register (int timeout, TimerClient client );
+}
+```
+```java
+class TimerClient{
+    public abstract void timeout();
+}
+```
 
+<span style="color:red">How about a timed door?</span> <!-- .element: class="fragment" -->
+
+
+---
+
+## Interface Polution
+
+<br/>
+![](http://www.plantuml.com/plantuml/png/JOr13i8m30JlViLoAqBv0Aeu04_W0r5hYgKGIudR2_1tAeCWjztLQcP8iLPSvCw5Xdy-9U5i3mAmMrH6sBhgRDsMNj_VMRLGLcCKcMwsnt4sh1qn9Ion29jmXLxzYSpi5CdJXXhLw1noAq8uj7vgClfd21-fyxp-06y0)
+
+---
+
+## Seperate Interfaces
+
+- Solution 1: adapter
+
+<br/>
+![](http://www.plantuml.com/plantuml/png/Iyv9B2vM2CdCJItYIaQmdNCoK_DAghaK51Iqo_8pKnHAWABvfIKQcborK7Kk-Vd8Mb90V2GDAK1k25PDO0iSKn8BIbABSDZ01LQZeAjhX-mSBYIsWasDhYw6SLmW0OWKt4rSw8hWnaAauIm5FJqxJ1DHfS5I0000)
+
+
+---
+
+## Seperate Interface
+
+- Solution 2: multiple inheritance 
+  + in Java,  *Interface*
+
+![](http://www.plantuml.com/plantuml/png/Iyv9B2vM2CdCJItYIaQmdNCoK_DAghaK51Iqo_8pKnHAWABvfIKQcborN9vv9Qb5QOd9gGek-Vd8sb90V2HDAK1k2996Bh3P2hgwTiYsS85qATZKwEeY3E52aiSc1MOfwEb13G80)
+
+---
+
+## Heuristic
+
+<br/>
+- 客户程序应该仅依赖于它们实际调用的方法。
+- 方法：把胖类的接口分解为多个特定于客户程序的接口。
+- 目标：<font color="red">高内聚，低耦合</font>
+
+---
+
+## DIP 依赖倒置原则
+
+- High level modules should not depend on low-level modules. Both should depend on abstractions.
+
+- Abstractions should not depend on details. Details should depend on abstractions.
+
+<span style="color:red">Inversion: 相对于结构化方法而言！</span> <!-- .element: class="fragment" -->
+
+---
+
+## Laying
+
+- <font size=6>Booch: “… all well structured OO architectures have clearly defined layers, with each layer providing some coherent set of services through a well-defined and controlled interface.”</font>
+
+![](http://www.plantuml.com/plantuml/png/2yZFoKokz4ciJ2rIqDEpK_1DJSv8pCiipWKBSQ5omIf2Ip9pCaiWMW00)
+
+<span style="color:red">Unfortunate!</span> <!-- .element: class="fragment" -->
+
+---
+
+## Laying
+
+- Inverted Layers
+
+![](http://www.plantuml.com/plantuml/png/yymhIIrAIqnELGZ8pybChWnEBIhBJ4xrX0bpmLaAlgd96ObvcSMv66gu87fz4YjJYnHqTUrmcOLTMC6cHbSNOJhO52vKBjXGtFRZb84O7LgIcPDP0d4U0000)
+
+
+---
+
+## Hollywood Principle
+
+- “Don’t call us, we’ll call you.” 低层模块实现了在高层模块中声明并被高层模块调用的接口。
+
+- also an inversion of interface ownership: 客户拥有抽象接口，服务者则从这些抽象接口派生。
+
+---
+
+## 再来个例子
+
+![](http://www.plantuml.com/plantuml/png/Iyv9B2vMS2ejASdFg-PIK53GBiZFoT7GvAhbIWPB-IJc5a0aIagBylppW59mJbeQM24NHBk2hguTM3a0)
+
+```java
+public class Button{
+    private Lamp itsLamp;
+    public void poll(){
+          if (/* some condition */)
+               itsLamp.turnOn();
+     }
+}
+```
+<span style="color:red">问题：高层依赖低层！</span> <!-- .element: class="fragment" -->
+
+---
+
+## 反转
+
+![](http://www.plantuml.com/plantuml/png/Iyv9B2vMS2ejASdFg-PIK53GBiZFoT7GvAhbIamgBYbAJ2vHI4PI4vnQL9PQ155PKbgKvvy7L0ldfAM1TN91r2hewjgXQED2vYZOrEZgAlWavXO00000)
+
+```java
+public class Button{
+    private ButtonServer bs;
+    public void poll(){
+          if (/* some condition */)
+               bs.turnOn();
+     }
+}
 ```
 
 ---
 
-## final方法
+## 反转
 
-代表这个方法不可以被子类的方法重写。
+![](http://www.plantuml.com/plantuml/png/Iyv9B2vMS2ejASdFg-PIK53GBiZFoT7GvAhbIamgBYbAJ2vHI0Qh2IxFB4dEI4pAINL9BSjCJeMeBYajolFF0wg7SzBImBgv86OgwEhQOMZbGXTGiAdHrLNmISmj0000)
 
-```java
-class Man extends Human{
-    public final void hitChild(){
-        //beat and KO!
-    }
-}
+<font color="yellow">换个更友好的名字</font>
+
+---
+
+## Heuristic
+
+<br/>
+- Depend on abstractions!
+  + 不应该依赖于具体类——程序中所有的依赖关系都应该终止于抽象类或者接口。
+
+---
+
+## Heuristic
+
+<br/>
+- so,
+  + 任何变量都不应该持有一个指向具体类的指针或引用
+  + 任何类都不应该从具体类派生
+  + 任何方法都不应该覆写它的任何基类中的已经实现了的方法
+  + 例外：可以依赖稳定的具体类，比如String
+
+
+---
+
+## DIP
+
+<br/>
+- 依赖关系的倒置正是好的面向对象设计的标志所在。
+- 如果程序的依赖关系是倒置的，它就是面向对象的设计，否则就是过程化的设计。
+- DIP是实现许多OO技术所宣称的好处的基本低层机制。它的正确应用对于创建可重用的框架来说是必须的。
+
+---
+
+## CARP 合成/聚合复用原则
+
+- Composition vs. Aggregration
  
-class Father extends Man{
-    @Override
-    public final void hitChild(){
-        // beat harder ...
-        return // compilation error: overridden method is final
-    }
-}
+   + 聚合表示“拥有”关系或者整体与部分的关系
+   + 合成是一种强得多的“拥有”关系——部分和整体的生命周期是一样的。
 
-```
-
-“父类中这件事已经做得够好了，子类无法超越”
+- 换句话说：合成是值的聚合（Aggregation by Value），而一般说的聚合是引用的聚合（Aggregation by Reference）
 
 
 ---
 
-## final类
+## 复用
 
+<br/>
+- 复用方法：
 
-```java
-final class Father extends Man{ 
+   + 合成/聚合复用：将已有对象纳入到新对象中，使之成为新对象的一部分
 
-}
+   + 继承
 
-class Son extends Father{ //compilation error: cannot inherit from final class
+---
 
-}
+## 复用
 
-```
-“老子整个已经不可超越”
+- 继承的优点
+
+   + 新类易实现
+   + 易修改或扩展
+
+- 继承的缺点
+
+   + 继承复用破环包装，白箱复用
+   + 父类发生变化，子类不得不改变 
+   + 继承的实现是静态的，不能在运行时改变  
+
+---
+
+## 复用
+
+- 合成/聚合的优点
+
+  + 黑箱复用
+  + 每一个新的类可以将焦点集中在一个任务上
+  + 可以在运行时动态进行
+
+- 缺点：系统中会有较多的对象需要管理
+
+---
+
+## 复用原则
+
+- 优先使用对象合成/聚合，而不是继承
+
+- 利用合成/聚合可以在运行时动态配置组件的功能，并防止类层次规模的爆炸性增长
+
+- <font color="red">区分HAS-A 和 IS-A</font>
+
+---
+
+## Coad法则
+
+- 只有“Is-A”关系才符合继承关系，“Has-A”关系应当用聚合来描述。
+
+- 永远不会出现需要将子类换成另外一个类的子类的情况。
+
+- 子类具有扩展父类的责任，而不是具有置换掉（override）或注销掉（Nullify）父类的责任。
+
+- 只有在分类学角度上有意义时，才可以使用继承。不要从工具类继承。
 
 
 ---
 
+## LoD （Law of Demeter）迪米特法则/最少知识原则
 
-## Polymorphism
+<br/>
+- Only talk to your immediate friends
 
-
-多态性是指对象能够有多种形态。
-
-- 男人是人
-- 男人是动物
-- 男人是一种存在
-
----
-
-## 多态是”继承“的产物
-
-```java
-
-class Man extends Human {
-    ...
-}
-
-class Human extends Creature{
-    ...
-} 
-
-class Creature extends Being{
-    ...
-}
-```
-
----
-
-## 多态意味着什么？
-
-```java
-class Creature extends Being{
-    public void eat(){
-        System.out.println("eating");
-    }
-}
-class Human extends Creature{
-    @Override
-    public void eat{
-        System.out.println("cooking...eating")
-    }
-} 
-class Woman extends Human {
-    @Override
-    public void eat{
-        System.out.println("cooking...photoing...eating");
-    }
-}
-
-Being you = new Woman();
-you.eat(); //??
-```
-
----
-
-## 再举个例子
-
-```java
-class Shape{  
-    void draw(){
-        System.out.println("Draw Shape");
-    }  
-}  
-class Circle extends Shape{  
-    void draw(){
-        System.out.println("Draw Circle");
-    }  
-}   
-class Triangle extends Shape{  
-    void draw(){
-        System.out.println("Draw Triangle");
-    }  
-}  
-class Square extends Shape{  
-    void draw(){
-        System.out.println("Draw Square");
-    }  
-}  
-public class Test {  
-     public static void main(String[] args) {  
-         Shape[] shapes = {new Circle(), new Triangle(), new Square()};  
-         for(Shape s : shapes){  
-             s.draw();  
-         }  
-     }  
-}  
-```
-执行结果？
+- Don't talk to strangers 
 
 
 ---
 
-## 再看一个例子
-```java
-class Shape{  
-    private void draw(){  
-        System.out.println("Draw Shape");  
-    }  
-      
-    void show(){  
-        draw();  
-    }  
-}  
-  
-class Circle extends Shape{  
-    void draw(){  
-        System.out.println("Draw Circle");  
-    }  
-}  
-  
-public class Test {
-     public static void main(String[] args) {  
-         Shape s = new Circle();  
-         s.show();  
-     }  
-}  
-```
-执行结果？
+## LoD
+
+- LoD的本质是信息隐藏
+
+  + <font size=6> 在类的划分上，应当创建有弱耦合的类。类之间的耦合越弱，就越有利于复用。</font>
+  + <font size=6> 在类的结构设计上，每一个类都应当尽量降低成员的访问权限。一个类不应当public自己的属性，而应当提供取值和赋值的方法让外界间接访问自己的属性。</font>
+  + <font size=6> 在类的设计上，只要有可能，一个类应当设计成<font color="red">不变类</font>。</font>
+  + <font size=6> 在对其它对象的引用上，一个类对其它对象的引用应该降到最低。</font>
 
 ---
 
-## 多态形成的条件
+## Design Principles
 
-- 继承
-- 重写
-- 父类引用指向子类对象
-
-实际上是由Java中的”动态绑定“机制造成的。<!-- .element: class="fragment" -->
-
----
-
-## 动态绑定
-
-https://stackoverflow.com/questions/19017258/static-vs-dynamic-binding-in-java
-
-
-http://www.jianshu.com/p/0677f366db08
-
+- <font size=6>SRP (The Single-Responsibility Principle) 单一职责原则</font>
+- <font size=6>OCP (The Open-Closed Principle) 开放-封闭原则</font>
+- <font size=6>LSP (The Liskov Substitution Principle) Liskov替换原则</font>
+- <font size=6>ISP (The Interface-Segregation Principle) 接口隔离原则</font>
+- <font size=6>DIP (The Dependency-Inversion Principle) 依赖倒置原则</font>
+- <font size=6>CARP (Composition/Aggregation Reuse Principle) 合成/聚合复用原则</font>
+- <font size=6>LoD (Law of Demeter) 迪米特法则</font>
 
 ---
 
-## 再想想，Why？
-
-## 抽象思维（编程）的支撑！<!-- .element: class="fragment" -->
+## 今天，你的葫芦娃违规了吗？
 
 ---
 
-## 抽象类
-
-当一个类没有足够的信息来描述一个具体的对象，而需要其他具体的类来支撑它，那么这样的类我们称它为抽象类。
-
-
---- 
-
-## 举个例子
-
-```java
-class Human {
-    public void meetLouisVuitton(){
-        //??
-    }
-}
-```
+## Let's Embrace Change.
 
 ---
-
-## Abstract Class
-```java
-abstract class Human {
-    public abstract void meetLouisVuitton();
-}
-class Man extends Human {
-    @Override
-    public void meetLouisVuitton(){
-        pass();
-    }
-}
-class Woman extends Human {
-    @Override
-    public void meetLouisVuitton(){
-        enter();
-    }
-}
-
-```
-
-Why？应对不确定。<!-- .element: class="fragment" -->
-
----
-
-
-## Interface
-
-当所有行为都不确定时，来一份Interface。
-
-接口比抽象类更抽象。
-
-接口是用来建立类与类之间的协议（protocol）。
-
-
----
-
-## 举个例子
-
-```java
-public interface Communicate{
-    public String talkTo(String message);
-}
-
-public Man extends Human implements Communicate{
-    ...
-    public String talkTo(String message){
-        return process(message);
-    }
-}
-public Woman extends Human implements Communicate{
-    ...
-    public String talkTo(String message){
-        return "我不听我不听我不听";
-    }
-}
-```
-
----
-
-## Why？
-
-抽象的行为协议定义
-
-接口与实现的分离
-
-
----
-
-## 多继承
-
-```java
-interface A{
-    public void a();
-}
-interface B{
-    public void b();
-}
-
-class C implements A,B {
-    public void a(){
-        ...
-    }
-    public void b(){
-        ...
-    }
-}
-```
-为什么Java不支持多继承多个父类但支持实现多个接口？<!-- .element: class="fragment" -->
-
----
-
-## 接口中的成员变量
-
-- 成员变量必须是`public static final`
-
-为什么? 公有化，标准化、规范化。<!-- .element: class="fragment" -->
-
----
-
-
-## Inner Classes
-
-pp. 345-388
-
-Why Inner Classes？<!-- .element: class="fragment" -->
-
-下次再说<!-- .element: class="fragment" -->
-
----
-
-
-## 再看葫芦娃
-
-
-![](https://camo.githubusercontent.com/a5cc35d2179c5bf861f6a8eeca25fc5fa3e876a2/687474703a2f2f656e676c6973682e6372692e636e2f6d6d736f757263652f696d616765732f323030392f30362f32342f34363334636172746f6e312e6a7067)
-
----
-
 
 # END

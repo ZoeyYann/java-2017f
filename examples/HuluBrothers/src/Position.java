@@ -2,6 +2,9 @@ public class Position {
 
     private int x;
 
+
+
+    @Deprecated
     public Creature getHolder() {
         return holder;
     }

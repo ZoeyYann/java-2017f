@@ -27,6 +27,7 @@ public class Queue {
     }
 
 
+    @Deprecated
     public void rollCall() {
         for (Creature creature : this.creatures) {
             creature.report(); //让creature 自己报一遍
@@ -53,14 +54,17 @@ public class Queue {
         }
     }
 
+    @SuppressWarnings(value="all")
     public static void main(String[] args) {
 
         Huluwa[] brothers = new Huluwa[7];
         for (int i = 0; i < brothers.length; i++) {
             brothers[i] = new Huluwa(COLOR.values()[i], SENIORITY.values()[i]);
+
         }
 
         Queue queue = new Queue(brothers);
+
 
         queue.rollCall();
 
