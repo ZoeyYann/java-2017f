@@ -3,22 +3,15 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Queue {
 
-
     private Position[] positions;
-
+    private Creature[] creatures;
     public Position[] getPositions() {
         return positions;
     }
 
-
     public Creature[] getCreatures() {
         return creatures;
     }
-
-
-
-    private Creature[] creatures;
-
     public Queue(Huluwa[] brothers) {
 
 
@@ -36,14 +29,14 @@ public class Queue {
 
     public void rollCall() {
         for (Creature creature : this.creatures) {
-            creature.report();
+            creature.report(); //让creature 自己报一遍
         }
         System.out.println();
         System.out.flush();
 
         for (Position position : this.positions) {
 
-            position.getHolder().report();
+            position.getHolder().report();  //让队伍中的position一个个报数
         }
 
         System.out.println("\n");
